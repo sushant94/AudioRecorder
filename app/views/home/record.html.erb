@@ -1,0 +1,17 @@
+<img id="record" src="assets/recp.png" onclick="toggleRecording(this);">
+<div style="width:100%;">
+<h1>Your Recordings:</h1>
+
+<% @files.each do |file| %>
+<div>
+    <h2> <%= time_ago_in_words(file.created_at).to_s + " ago."%></h2>
+<audio controls>
+<source src=<%= "/audioClips/" + file.filename + ".wav" %>>
+</audio>
+    <%= link_to " Delete clip",action: "delete", id: file.id %>
+</div>
+<% end %>
+</div>
+<%= javascript_include_tag "main" %>
+<script src="/assets/recorder.js?body=1"></script>
+
