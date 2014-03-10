@@ -16,7 +16,8 @@ function gotBuffers( buffers ) {
 function doneEncoding( blob ) {
     //Write code to save data to server instead
 
-    Recorder.save( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
+    // Recorder.save( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
+    Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
     recIndex++;
 
 }
@@ -28,7 +29,7 @@ function toggleRecording( e ) {
         e.classList.remove("recording");
         audioRecorder.getBuffers( gotBuffers );
         document.querySelector("#record").src = "/assets/recp.png"
-        document.querySelector("#message").innerHTML = "Reload page to view your clip!";
+        document.querySelector("#message").innerHTML = "Click save to download your file!";
     } else {
         if (!audioRecorder)
             return;
