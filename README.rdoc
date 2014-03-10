@@ -1,1 +1,10 @@
-<h2> AudioRecorder Demo App </h2>
+== AudioRecorder Demo App
+
+This is a Rails App to demonstrate Audio recording using WebRTC.
+
+For more information you may want to refer to these links:
+* [AudioRecorder] (https://github.com/cwilso/AudioRecorder)
+* [W3C Specifications] (https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html)
+
+Make sure you have a webRTC enabled browser before running this application.
+
