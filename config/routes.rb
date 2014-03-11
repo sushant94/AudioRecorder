@@ -13,6 +13,8 @@ F::Application.routes.draw do
 
    get '/videoPic' => 'home#recording'
 
+   get '/recOGG' => 'home#recOGG'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

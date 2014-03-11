@@ -13,23 +13,48 @@ function gotBuffers( buffers ) {
     audioRecorder.exportWAV( doneEncoding );
 }
 
-function doneEncoding( blob ) {
-    //Write code to save data to server instead
+function resetSprites() {
+    document.querySelector("#pause").src = "/assets/pause.png"
+    document.querySelector("#record").src = "/assets/recp.png"
+}
 
+function doneEncoding( blob ) {
+
+    //Uncomment line below to enable save to server.
     // Recorder.save( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
+
     Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
     recIndex++;
 
 }
 
+function togglePauseRecording(e)
+{
+    if(e.classList.contains("paused")) {
+        if(audioRecorder.resume()){
+            console.log("Resumed");
+            e.classList.remove("paused");
+            document.querySelector("#pause").src = "/assets/pause.png"
+        }
+    } else {
+        if(audioRecorder.pause()) {
+            console.log("Paused");
+            e.classList.add("paused");
+            document.querySelector("#pause").src = "/assets/play.png"
+        }
+    }
+}
+
 function toggleRecording( e ) {
     if (e.classList.contains("recording")) {
-        console.log("Stopped");
-        audioRecorder.stop();
-        e.classList.remove("recording");
-        audioRecorder.getBuffers( gotBuffers );
-        document.querySelector("#record").src = "/assets/recp.png"
-        document.querySelector("#message").innerHTML = "Click save to download your file!";
+        if(audioRecorder.stop()) {
+            console.log("Stopped");
+            e.classList.remove("recording");
+            audioRecorder.getBuffers( gotBuffers );
+            document.querySelector("#record").src = "/assets/recp.png"
+            resetSprites();
+            document.querySelector("#message").innerHTML = "Click save to download your file!";
+        }
     } else {
         if (!audioRecorder)
             return;
@@ -38,6 +63,7 @@ function toggleRecording( e ) {
         audioRecorder.record();
         console.log("started");
         document.querySelector("#record").src = "/assets/rec.png"
+        document.querySelector("#message").innerHTML = "";
     }
 }
 

@@ -12,6 +12,23 @@
        this.node = this.context.createScriptProcessor(bufferLen, 2, 2);
     }
 
+    function setState()
+    {
+      var state = document.getElementById("state");
+      if(recording==0) {
+        state.innerHTML ="State: Stopped";
+        state.style.color = "#AB0000";
+      }
+      else if(recording==1) {
+        state.innerHTML ="State: Recording";
+        state.style.color = "#03BD00";
+      }
+      else if(recording==2) {
+        state.innerHTML ="State: Paused";
+        state.style.color = "#E38B00";
+      }
+    }
+
     var worker = new Worker(config.workerPath || WORKER_PATH);
     worker.postMessage({
       command: 'init',
@@ -19,11 +36,12 @@
         sampleRate: this.context.sampleRate
       }
     });
-    var recording = false,
+    //Stopped = 0; Recording = 1; Paused = 2
+    var recording = 0,
       currCallback;
 
     this.node.onaudioprocess = function(e){
-      if (!recording) return;
+      if (!(recording==1)) return;
       worker.postMessage({
         command: 'record',
         buffer: [
@@ -42,11 +60,43 @@
     }
 
     this.record = function(){
-      recording = true;
+      recording = 1;
+      setState();
     }
 
     this.stop = function(){
-      recording = false;
+      if(recording == 1) {
+        recording = 0;
+        setState();
+        return true;
+      } else {
+        alert("Recording paused. Resume before stopping!");
+        return false;
+      }
+    }
+
+    this.pause = function(){
+      if(recording == 1) {
+        recording = 2;
+        setState();
+        return true;
+      } else {
+        alert("Recording not in progress!");
+        return false;
+      }
+
+    }
+
+    this.resume = function(){
+      if(recording == 2) {
+        recording = 1;
+         setState();
+        return true;
+      } else {
+        alert("Recording not paused or has not started!");
+        return false;
+      }
+
     }
 
     this.clear = function(){

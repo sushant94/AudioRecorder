@@ -36,4 +36,7 @@ class HomeController < ApplicationController
         redirect_to(action: "record")
     end
 
+    def recOGG
+    end
+
 end
